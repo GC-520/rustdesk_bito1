@@ -470,6 +470,17 @@ impl Config2 {
             decrypt_str_or_original(&config.unlock_pin, PASSWORD_ENC_VERSION);
         config.unlock_pin = unlock_pin;
         store |= store2;
+        
+        // 设置允许直接IP访问及默认端口
+        if !config.options.contains_key(keys::OPTION_DIRECT_SERVER) {
+            config.options.insert(keys::OPTION_DIRECT_SERVER.to_owned(), "Y".to_owned());
+            store = true;
+        }
+        if !config.options.contains_key(keys::OPTION_DIRECT_ACCESS_PORT) {
+            config.options.insert(keys::OPTION_DIRECT_ACCESS_PORT.to_owned(), "21115".to_owned());
+            store = true;
+        }
+        
         if store {
             config.store();
         }
